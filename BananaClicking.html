@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banana Clicker</title>
+    <style>
+        /* Simple CSS for demonstration */
+        .game-container { text-align: center; }
+        .banana-img { cursor: pointer; width: 200px; }
+        .btn { margin-top: 10px; }
+        #score { font-size: 24px; }
+    </style>
+</head>
+<body>
+    <div id="gameContainer" class="game-container">
+        <h1>Banana Clicker</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg" 
+             alt="Banana" 
+             id="bananaImg" 
+             class="banana-img" />
+        <div id="score" class="score">Bananas: 0</div>
+        <button id="increaseClickValue" class="btn">Increase Bananas Per Click (Cost: 10)</button>
+        <button id="buyAutoClicker" class="btn">Buy Auto-Clicker (Cost: 100)</button>
+    </div>
+
+    <script>
+        let score = 0;
+        let bananasPerClick = 1;
+        let autoClickerCost = 100;
+        let autoClickerCount = 0;
+
+        document.getElementById('bananaImg').addEventListener('click', function() {
+            score += bananasPerClick;
+            updateScoreDisplay();
+        });
+
+        document.getElementById('bananaImg').addEventListener('touchstart', function() {
+            score += bananasPerClick;
+            updateScoreDisplay();
+        });
+
+        document.getElementById('increaseClickValue').addEventListener('click', function() {
+            if(score >= 10) {
+                score -= 10; // Subtract cost
+                bananasPerClick += 1; // Increase bananas per click
+                updateScoreDisplay();
+            } else {
+                alert("You need more bananas!");
+            }
+        });
+
+        document.getElementById('buyAutoClicker').addEventListener('click', function() {
+            if(score >= autoClickerCost) {
+                score -= autoClickerCost;
+                autoClickerCost = Math.floor(autoClickerCost * 1.15); // Increase the cost for the next auto-clicker
+                autoClickerCount += 1;
+                updateScoreDisplay();
+                updateAutoClickers();
+            } else {
+                alert("You need more bananas!");
+            }
+        });
+
+        function updateAutoClickers() {
+            if(autoClickerCount > 0) {
+                setInterval(() => {
+                    score += autoClickerCount;
+                    updateScoreDisplay();
+                }, 1000); // Auto-clickers work every second
+            }
+        }
+
+
+        function updateScoreDisplay() {
+            document.getElementById('score').textContent = 'Bananas: ' + score;
+            document.getElementById('buyAutoClicker').textContent = 'Buy Auto-Clicker (Cost: ' + autoClickerCost + ')';
+        }
+
+        updateScoreDisplay(); // Initial display update
+    </script>
+</body>
+</html>
